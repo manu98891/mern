@@ -1,34 +1,22 @@
-import express, { Express, Request, Response } from "express";
-import dotenv  from 'dotenv'
+import dotenv from 'dotenv';
+import server from './src/server';
+import { LogError, LogSuccess } from './src/utils/logger';
+import { error } from 'console';
 
 // configuracion del .env
 dotenv.config();
 
-// creacion de la App
-const app: Express = express();
-const port: string | number = process.env.PORT || 8000;
+const port = process.env.PORT || 8000
 
 
-// Definir la primera ruta de la aplicaicon
-app.get('/',(req: Request, res: Response) => {
-    // saludo
-    res.send('My rutine API para el trabajo final')
-});
+// Ejecutar servidor
 
-// Definir la primera ruta de la aplicaicon
-app.get('/hello',(req: Request, res: Response) => {
-    // saludo
-    res.send('Esta es la segunda ruta de la aplicacion')
-});
-
-
-// ejecutar la aplicaion
-
-app.listen(port,() => {
-    console.log('Se esta corriendo en: http://localhost:8000');
+server.listen(port, () => {
+    LogSuccess(`[SERVER ON]: Se encuentra corriendo en http://localhost:${port}`);
 })
 
-
-
-
+//* Server error
+server.on('error', (error) => {
+    LogError(`[SERVER ERROR]: ${error}`);
+})
 
